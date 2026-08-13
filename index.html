@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Торғайдың тарихи картасы</title>
+
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f1e8;
+      color: #2d2924;
+    }
+
+    header {
+      padding: 25px 20px;
+      text-align: center;
+      background: #3f3328;
+      color: white;
+    }
+
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 30px;
+    }
+
+    header p {
+      margin: 0;
+      opacity: 0.85;
+    }
+
+    #map {
+      width: 100%;
+      height: calc(100vh - 125px);
+      min-height: 500px;
+    }
+
+    .leaflet-popup-content {
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .popup-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .popup-button {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 7px 12px;
+      border-radius: 6px;
+      background: #3f3328;
+      color: white;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Торғайдың тарихи картасы</h1>
+  <p>Торғай өңірінің тарихи-мәдени мұрасы</p>
+</header>
+
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+
+  // Торғай картасының бастапқы орналасуы
+  const map = L.map('map').setView([50.35, 63.48], 7);
+
+  // OpenStreetMap картасы
+  L.tileLayer(
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {
+      attribution: '&copy; OpenStreetMap contributors'
+    }
+  ).addTo(map);
+
+
+  // =====================================
+  // ТАРИХИ НЫСАНДАР
+  // =====================================
+
+  const places = [
+
+    {
+      name: "Ыбырай Алтынсарин",
+      lat: 50.35,
+      lng: 63.48,
+      description:
+        "Торғай өңірінің ағартушылық тарихымен байланысты тарихи орын."
+    },
+
+    {
+      name: "Ахмет Байтұрсынұлы",
+      lat: 50.42,
+      lng: 63.52,
+      description:
+        "Ахмет Байтұрсынұлының өмірі мен қоғамдық-ағартушылық қызметіне байланысты орын."
+    },
+
+    {
+      name: "Міржақып Дулатов",
+      lat: 50.30,
+      lng: 63.60,
+      description:
+        "Міржақып Дулатовтың өмірі мен шығармашылығына байланысты тарихи орын."
+    },
+
+    {
+      name: "Амангелді Иманов",
+      lat: 50.12,
+      lng: 65.00,
+      description:
+        "Амангелді Иманов және 1916 жылғы ұлт-азаттық көтеріліс тарихымен байланысты орын."
+    },
+
+    {
+      name: "Татыр шайқасы",
+      lat: 50.10,
+      lng: 64.70,
+      description:
+        "Торғай өңірінің әскери-тарихи оқиғаларымен байланысты орын."
+    }
+
+  ];
+
+
+  // =====================================
+  // КАРТАҒА НҮКТЕЛЕРДІ ҚОСУ
+  // =====================================
+
+  places.forEach(place => {
+
+    const marker = L.marker([place.lat, place.lng])
+      .addTo(map);
+
+    marker.bindPopup(`
+      <div>
+        <div class="popup-title">
+          ${place.name}
+        </div>
+
+        <div>
+          ${place.description}
+        </div>
+
+        <a href="#" class="popup-button">
+          Толығырақ
+        </a>
+      </div>
+    `);
+
+  });
+
+</script>
+
+</body>
+</html>
