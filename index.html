@@ -9,7 +9,7 @@
   <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  />
+  >
 
   <style>
     * {
@@ -20,11 +20,11 @@
       margin: 0;
       font-family: Arial, sans-serif;
       background: #f5f1e8;
-      color: #2d2924;
+      color: #302820;
     }
 
     header {
-      padding: 25px 20px;
+      padding: 28px 20px;
       text-align: center;
       background: #3f3328;
       color: white;
@@ -37,7 +37,7 @@
 
     header p {
       margin: 0;
-      opacity: 0.85;
+      opacity: 0.9;
     }
 
     #map {
@@ -46,25 +46,45 @@
       min-height: 500px;
     }
 
-    .leaflet-popup-content {
+    .popup {
+      max-width: 340px;
+    }
+
+    .popup h2 {
+      font-size: 19px;
+      margin: 0 0 8px;
+    }
+
+    .category {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 10px;
+      background: #eee3d3;
+      margin-bottom: 8px;
+      font-size: 12px;
+    }
+
+    .popup h3 {
       font-size: 15px;
+      margin: 14px 0 5px;
+    }
+
+    .popup p {
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 5px 0;
+    }
+
+    .popup ul {
+      padding-left: 20px;
+      font-size: 14px;
       line-height: 1.5;
     }
 
-    .popup-title {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 8px;
-    }
-
-    .popup-button {
-      display: inline-block;
-      margin-top: 8px;
-      padding: 7px 12px;
-      border-radius: 6px;
-      background: #3f3328;
-      color: white;
-      text-decoration: none;
+    .source {
+      margin-top: 12px;
+      font-size: 11px;
+      color: #777;
     }
   </style>
 </head>
@@ -82,90 +102,143 @@
 
 <script>
 
-  // Торғай картасының бастапқы орналасуы
-  const map = L.map('map').setView([50.35, 63.48], 7);
+  // ==========================================
+  // КАРТА
+  // ==========================================
 
-  // OpenStreetMap картасы
+  const map = L.map("map").setView([50.35, 63.48], 8);
+
   L.tileLayer(
-    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
     {
-      attribution: '&copy; OpenStreetMap contributors'
+      attribution: "&copy; OpenStreetMap contributors"
     }
   ).addTo(map);
 
 
-  // =====================================
+  // ==========================================
   // ТАРИХИ НЫСАНДАР
-  // =====================================
+  // ==========================================
 
-  const places = [
+  const historicalPlaces = [
 
     {
-      name: "Ыбырай Алтынсарин",
+      name: "Ахмет Байтұрсынұлы мен Міржақып Дулатұлының әдеби музейі",
+
+      category: "🏛️ Музей",
+
+      // Уақытша координата — кейін нақтылаймыз
       lat: 50.35,
       lng: 63.48,
+
       description:
-        "Торғай өңірінің ағартушылық тарихымен байланысты тарихи орын."
+        "Ахмет Байтұрсынұлы мен Міржақып Дулатұлының өмірі мен шығармашылығына арналған әдеби музей.",
+
+      history:
+        "Музей 1991 жылы ашылды. 2022 жылы Ахмет Байтұрсынұлының 150 жылдығына орай музейде толық реэкспозиция жүргізілді.",
+
+      importance:
+        "Музей Алаш қайраткерлерінің мұрасын сақтап, кейінгі ұрпаққа таныстыратын маңызды тарихи-мәдени орын.",
+
+      source:
+        "Торғайдың Жангелдин мұражайлар кешенінің ресми сайты"
     },
 
-    {
-      name: "Ахмет Байтұрсынұлы",
-      lat: 50.42,
-      lng: 63.52,
-      description:
-        "Ахмет Байтұрсынұлының өмірі мен қоғамдық-ағартушылық қызметіне байланысты орын."
-    },
 
     {
-      name: "Міржақып Дулатов",
-      lat: 50.30,
-      lng: 63.60,
+      name: "Ыбырай Алтынсариннің мемориалды-педагогикалық музейі",
+
+      category: "🏫 Музей",
+
+      // Уақытша координата — кейін нақтылаймыз
+      lat: 50.35,
+      lng: 63.48,
+
       description:
-        "Міржақып Дулатовтың өмірі мен шығармашылығына байланысты тарихи орын."
+        "Қазақтың ұлы ағартушысы Ыбырай Алтынсариннің өмірі, ағартушылық қызметі мен мұрасына арналған музей.",
+
+      history:
+        "Ыбырай Алтынсариннің Торғайдағы ағартушылық қызметі өңір тарихымен тығыз байланысты. Музей оның өмірі мен педагогикалық мұрасын таныстырады.",
+
+      importance:
+        "Бұл орын қазақ даласындағы ағартушылық тарихын және Ыбырай Алтынсариннің білім беру ісіндегі рөлін таныстыруға мүмкіндік береді.",
+
+      source:
+        "Торғайдың Жангелдин мұражайлар кешенінің ресми сайты"
     },
 
-    {
-      name: "Амангелді Иманов",
-      lat: 50.12,
-      lng: 65.00,
-      description:
-        "Амангелді Иманов және 1916 жылғы ұлт-азаттық көтеріліс тарихымен байланысты орын."
-    },
 
     {
       name: "Татыр шайқасы",
-      lat: 50.10,
-      lng: 64.70,
+
+      category: "⚔️ Тарихи оқиға",
+
+      // Татыр шайқасының белгісі Жаркөл ауылында
+      // Нақты координатаны кейін тексеріп енгіземіз
+      lat: 50.35,
+      lng: 63.48,
+
       description:
-        "Торғай өңірінің әскери-тарихи оқиғаларымен байланысты орын."
+        "1916 жылғы Торғай өңіріндегі тарихи оқиғалармен байланысты орын.",
+
+      history:
+        "Татыр шайқасы Торғай өңірінің 1916 жылғы ұлт-азаттық қозғалысы тарихымен байланысты.",
+
+      importance:
+        "Бұл тарихи орын Торғайдағы 1916 жылғы көтеріліс тарихын зерттеу және есте сақтау үшін маңызды.",
+
+      source:
+        "Торғай өңірінің тарихи-өлкетану материалдары"
     }
 
   ];
 
 
-  // =====================================
-  // КАРТАҒА НҮКТЕЛЕРДІ ҚОСУ
-  // =====================================
+  // ==========================================
+  // НҮКТЕЛЕРДІ КАРТАҒА ШЫҒАРУ
+  // ==========================================
 
-  places.forEach(place => {
+  historicalPlaces.forEach(place => {
 
-    const marker = L.marker([place.lat, place.lng])
-      .addTo(map);
+    const marker = L.marker([
+      place.lat,
+      place.lng
+    ]).addTo(map);
 
     marker.bindPopup(`
-      <div>
-        <div class="popup-title">
-          ${place.name}
+
+      <div class="popup">
+
+        <h2>${place.name}</h2>
+
+        <div class="category">
+          ${place.category}
         </div>
 
-        <div>
+        <h3>Бұл не?</h3>
+
+        <p>
           ${place.description}
+        </p>
+
+        <h3>Тарихы</h3>
+
+        <p>
+          ${place.history}
+        </p>
+
+        <h3>Тарихи маңызы</h3>
+
+        <p>
+          ${place.importance}
+        </p>
+
+        <div class="source">
+          Дереккөз: ${place.source}
         </div>
 
-        <a href="#" class="popup-button">
-          Толығырақ
-        </a>
       </div>
+
     `);
 
   });
